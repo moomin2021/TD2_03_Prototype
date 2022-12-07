@@ -1,16 +1,18 @@
 #include "DxLib.h"
+#include "Key.h"
+#include "SceneManager.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "LE2A_14_タムラ_フミヤ: タイトル";
+const char Title[] = "LE2A_14_タムラ_フミヤ: タイトル";
 
 // ウィンドウ横幅
-const int WIN_WIDTH = 600;
+const int WIN_WIDTH = 1000;
 
 // ウィンドウ縦幅
-const int WIN_HEIGHT = 400;
+const int WIN_HEIGHT = 1000;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
-                   _In_ int nCmdShow) {
+	_In_ int nCmdShow) {
 	// ウィンドウモードに設定
 	ChangeWindowMode(TRUE);
 
@@ -19,7 +21,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 
 	// タイトルを変更
-	SetMainWindowText(TITLE);
+	SetMainWindowText(Title);
 
 	// 画面サイズの最大サイズ、カラービット数を設定(モニターの解像度に合わせる)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
@@ -41,32 +43,30 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// ゲームループで使う変数の宣言
 
+	// キーボード入力クラスのインスタンス取得
+	Key* key = Key::GetInstance();
 
-	// 最新のキーボード情報用
-	char keys[256] = {0};
-
-	// 1ループ(フレーム)前のキーボード情報
-	char oldkeys[256] = {0};
+	// シーン管理クラスのインスタンス取得
+	SceneManager* sceneM = SceneManager::GetInstance();
+	sceneM->ChangeScene(SCENE::GAME);// -> 最初のシーン
 
 	// ゲームループ
 	while (true) {
-		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
-		for (int i = 0; i < 256; i++)
-		{
-			oldkeys[i] = keys[i];
-		}
-
-		// 最新のキーボード情報を取得
-		GetHitKeyStateAll(keys);
-
 		// 画面クリア
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		// 更新処理
+#pragma region 更新処理
+		// キーボード入力更新
+		key->Update();
 
+		// シーン管理クラス更新
+		sceneM->Update();
+#pragma endregion
 
-		// 描画処理
+#pragma region 描画処理
+		sceneM->Draw();
+#pragma endregion
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
