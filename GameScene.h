@@ -3,6 +3,9 @@
 #include "Key.h"
 #include "Player.h"
 #include "Boss.h"
+#include "Stage.h"
+#include "Enemy.h"
+#include <vector>
 
 class GameScene : public BaseScene {
 	// --メンバ変数-- //
@@ -17,6 +20,13 @@ private:
 
 	// ボス
 	Boss* boss_;
+
+	// ステージ
+	Stage* stage_;
+
+	// エネミー
+	std::vector<Enemy*> enemys_;
+	int maxEnemy_;
 
 	// --メンバ関数-- //
 public:

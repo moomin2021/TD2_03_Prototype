@@ -61,6 +61,12 @@ public:
 	// ボスの座標を取得
 	Vector2 &GetPos() { return pos_; }
 
+	// ノックバックベクトルを取得
+	Vector2& GetKnockVec() { return knockVec_; }
+
+	// 半径を取得
+	float GetRadius() { return radius_; }
+
 	// 状態を取得
 	int GetState() { return state_; }
 #pragma endregion
